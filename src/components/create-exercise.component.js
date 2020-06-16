@@ -16,7 +16,7 @@ export default class CreateExercise extends Component {
 
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
-    // this.onChangeDuration = this.onChangeDuration.bind(this);
+    this.onChangeDuration = this.onChangeDuration.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -29,20 +29,17 @@ export default class CreateExercise extends Component {
   }
 
   onChangeUsername(e) {
-    this.setState = ({ username: e.target.value })
+    this.setState({ username: e.target.value })
   }
   onChangeDescription(e) {
-    this.state.description = e.target.value;
-    this.setState = ({ description: e.target.value })
+    this.setState({ description: e.target.value })
   }
   onChangeDuration(e) {
-    console.log("Changedddd")
-    this.setState = ({
-      duration: e.target.value
-    })
+    console.log(e)
+    this.setState({ duration: e })
   }
   onChangeDate(date) {
-    this.setState = ({ date: date })
+    this.setState({ date: date })
   }
 
   onSubmit(e) {
@@ -65,7 +62,7 @@ export default class CreateExercise extends Component {
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label>Username: </label>
-            <select className="form-control" value={this.state.username} onChange={this.onChangeUsername} required>
+            <select ref="userInput" className="form-control" value={this.state.username} onChange={this.onChangeUsername} required>
               {
                 this.state.users.map(function(user) {
                   return <option key={user} value={user}> {user} </option>;
@@ -78,8 +75,8 @@ export default class CreateExercise extends Component {
             <input type="text" className="form-control" value={this.state.description} onChange={this.onChangeDescription} required />
           </div>
           <div className="form-group">
-            <label>Duration (minitues): </label>
-            <input type="text" className="form-control" defaultValue={this.state.duration} onChange={this.onChangeDuration.bind(this)} required />
+            <label>Duration (minutes): </label>
+            <input type="number" className="form-control" value={this.state.duration} onChange={this.onChangeDuration} required />
           </div>
           <div className="form-group">
             <label>Date: </label>
