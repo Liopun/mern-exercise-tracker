@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -22,10 +23,16 @@ export default class CreateExercise extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      users: ['test users'],
-      username: 'test user'
-    })
+    axios.get('http://localhost:5000/users/')
+        .then(response => {
+          if(response.data.length > 0) {
+            this.setState({
+              users: response.data.map(user => user.username),
+              username: response.data[0].username
+            })
+          }
+        })
+    
   }
 
   onChangeUsername(e) {
@@ -36,7 +43,7 @@ export default class CreateExercise extends Component {
   }
   onChangeDuration(e) {
     console.log(e)
-    this.setState({ duration: e })
+    this.setState({ duration: e.target.value })
   }
   onChangeDate(date) {
     this.setState({ date: date })
@@ -53,6 +60,11 @@ export default class CreateExercise extends Component {
     }
 
     console.log(exercise);
+
+    axios.post('http://localhost:5000/exercises/add', exercise)
+      .then(res => console.log(res.data));
+
+    window.location = '/';
   }
 
   render() {
@@ -76,7 +88,7 @@ export default class CreateExercise extends Component {
           </div>
           <div className="form-group">
             <label>Duration (minutes): </label>
-            <input type="number" className="form-control" value={this.state.duration} onChange={this.onChangeDuration} required />
+            <input type="text" className="form-control" value={this.state.duration} onChange={this.onChangeDuration} required />
           </div>
           <div className="form-group">
             <label>Date: </label>
